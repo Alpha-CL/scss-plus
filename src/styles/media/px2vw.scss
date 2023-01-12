@@ -1,0 +1,5 @@
+$base-screen-size: 750;
+
+@function vw($client-with, $design-width: $base-screen-size) {
+  @return $client-with / $design-width * 100vw;
+}

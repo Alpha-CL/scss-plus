@@ -1,0 +1,34 @@
+@mixin flex($direction: row, $wrap: wrap, $spindle: flex-start, $secondary: flex-start) {
+  display: flex;
+  flex-flow: $direction $wrap;
+  justify-content: $spindle;
+  align-items: $secondary;
+}
+
+@mixin flex-row($spindle: flex-start, $secondary: flex-start, $wrap: wrap) {
+  @include flex(row, $wrap, $spindle, $secondary);
+}
+
+@mixin flex-row-nowrap($spindle: flex-start, $secondary: flex-start) {
+  @include flex(row, nowrap, $spindle, $secondary);
+}
+
+@mixin flex-row-center($spindle: flex-start, $secondary: center) {
+  @include flex(row, nowrap, $spindle, $secondary);
+}
+
+@mixin flex-column($spindle: flex-start, $secondary: flex-start, $wrap: wrap) {
+  @include flex(column, $wrap, $spindle, $secondary);
+}
+
+@mixin flex-column-nowrap($spindle: flex-start, $secondary: flex-start) {
+  @include flex(column, nowrap, $spindle, $secondary);
+}
+
+@mixin flex-column-center($spindle: flex-start, $secondary: center) {
+  @include flex(column, nowrap, $spindle, $secondary);
+}
+
+@mixin flex-center() {
+  @include flex(row, nowrap, center, center);
+}

@@ -1,0 +1,43 @@
+$transition-all-property-name-list: (
+        'transition-property',
+        'transition-duration',
+        'transition-delay',
+        'transition-timing-function'
+);
+
+$transition-default-duration:           1s !default;
+$transition-default-property:           all !default;
+$transition-default-timing-function:    ease-in-out !default;
+$transition-default-delay:              0s !default;
+
+$transition-default-params: (
+        "property": $transition-default-property,
+        "duration": $transition-default-duration,
+        "delay": $transition-default-delay,
+        "bezier-curve": $transition-default-timing-function,
+);
+
+$transition-default-params-key-map: (
+        "bezier-curve": "timing-function"
+);
+
+@function getTransitionPropertyName($suffix, $prefix: 'transition', $key-map: $transition-default-params-key-map) {
+  $property-name: #{$prefix}-#{$suffix};
+  @if (map-has-key($key-map, $suffix)) {
+    $property-name: #{$prefix}-#{map-get($key-map, $suffix)};
+  }
+  @return $property-name;
+}
+
+@mixin transition($transition-params: $transition-default-params) {
+  @each $key, $val in $transition-default-params {
+    $property-name: getTransitionPropertyName($key);
+    @if (index($transition-all-property-name-list, $property-name) != null) {
+      @if (map-has-key($transition-params, $key)) {
+        #{$property-name}: map-get($transition-params, $key);
+      } @else {
+        #{$property-name}: map-get($transition-default-params, $key);;
+      }
+    }
+  }
+}

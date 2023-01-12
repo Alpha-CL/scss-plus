@@ -1,0 +1,26 @@
+@import "~px2rem.scss/px2rem";
+
+@mixin page-padding($padding-top: 20px, $padding-right: 20px, $padding-bottom: 0px, $padding-left: 20px) {
+  @include px2rem(padding-top, $padding-top);
+  @include px2rem(padding-right, $padding-right);
+  @include px2rem(padding-bottom, $padding-bottom);
+  @include px2rem(padding-left, $padding-left);
+}
+
+@mixin page-horizontal-margin($margin-horizontal: 20px) {
+  @include px2rem(margin-left, $margin-horizontal);
+  @include px2rem(margin-right, $margin-horizontal);
+}
+
+@mixin page-top-margin($margin-top: 16px) {
+  @include px2rem(margin-top, $margin-top);
+}
+
+@mixin page-bottom-margin($margin-bottom: 16px) {
+  @include px2rem(margin-bottom, $margin-bottom);
+}
+
+@mixin page-vertical-margin($margin-top: 16px, $margin-bottom: 16px) {
+  @include px2rem(margin-top, $margin-top);
+  @include px2rem(margin-bottom, $margin-bottom);
+}

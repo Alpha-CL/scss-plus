@@ -1,0 +1,147 @@
+$text-all-property-name: (
+  //'font-family',
+        'font-size',
+        'color',
+        'line-height',
+        'word-spacing',
+        'font-style',
+        'font-weight',
+        'text-align',
+        'text-decoration',
+        'text-indent',
+);
+
+
+$root-text-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+
+$text-default-family: $root-text-family;
+$text-default-font-size: 12px !default;
+$text-default-color: #333 !default;
+$text-default-line-height: normal !default;
+$text-default-word-space: normal !default;
+$text-default-font-style: normal !default;
+$text-default-font-weight: normal !default;
+$text-default-text-align: left !default;
+$text-default-text-decoration: none !default;
+$text-default-white-space: nowrap !default;
+$text-default-text-indent: 0 !default;
+
+$text-default-params-key-map: (
+  //family: 'font-family',
+        size: "font-size",
+        weight: "font-weight",
+        height: 'line-height',
+        space: 'word-spacing',
+        style: 'font-style',
+        align: "text-align",
+        indent: 'text-indent',
+        decoration: "text-decoration",
+        nowrap: "white-space",
+);
+
+$text-default-keys-list: map-keys($text-default-params-key-map);
+
+$text-default-params: (
+  //family: $text-default-family,
+        size: $text-default-font-size,
+        color: $text-default-color,
+        height: $text-default-line-height,
+        space: $text-default-word-space,
+        weight: $text-default-font-weight,
+        style: $text-default-font-style,
+        align: $text-default-text-align,
+        indent: $text-default-text-indent,
+        decoration: $text-default-text-decoration,
+        nowrap: $text-default-white-space,
+);
+
+@function getTextPropertyName($suffix, $key-map: $text-default-params-key-map) {
+  $property-name: #{$suffix};
+  @if (map-has-key($key-map, $suffix)) {
+    $property-name: #{map-get($key-map, $suffix)};
+  }
+  @return $property-name;
+}
+
+@mixin mixin-property($param-key, $param-value, $param-default-value) {
+  @if ($param-value != null and $param-value != true) {
+    #{$param-key}: $param-value;
+  } @else if ($param-value == true and $param-default-value != null) {
+    #{$param-key}: $param-default-value;
+  }
+}
+
+@mixin mixin-properties-map($param-key, $properties-map) {
+
+}
+
+@mixin mixin-properties-list() {
+}
+
+@mixin text(
+  $font-size: $text-default-font-size,
+  $color: $text-default-color,
+  $line-height: $text-default-line-height,
+  $font-weight: $text-default-font-weight,
+  $font-style: $text-default-font-style,
+  $text-params: $text-default-params,
+) {
+  @if ($font-size and not map-has-key($text-params, size)) {
+    @include mixin-property(font-size, $font-size, $text-default-font-size);
+  }
+  @if ($color and not map-has-key($text-params, color)) {
+    @include mixin-property(color, $color, $text-default-color);
+  }
+  @if ($line-height and not map-has-key($text-params, height)) {
+    @include mixin-property(line-height, $line-height, $text-default-line-height);
+  }
+  @if ($font-weight and not map-has-key($text-params, weight)) {
+    @include mixin-property(font-weight, $font-weight, $text-default-font-weight);
+  }
+  @if ($font-style and not map-has-key($text-params, style)) {
+    @include mixin-property(font-style, $font-style, $text-default-font-style);
+  }
+}
+
+@mixin text-plus(
+  $text-params: $text-default-params,
+  $font-size: $text-default-font-size,
+  $color: $text-default-color,
+  $line-height: $text-default-line-height,
+  $font-weight: $text-default-font-weight,
+  $font-style: $text-default-font-style,
+  $args...
+) {
+  @if (type-of($text-params) == map) {
+    @if (length($text-params) > 0) {
+      @each $key, $val in $text-params {
+        $property-name: getTextPropertyName($key);
+        $property-value: map-get($text-params, $key);
+        $property-default-value: map-get($text-default-params, $key);
+        @include mixin-property($property-name, $property-value, $property-default-value);
+      }
+    }
+    @include text($font-size, $color, $line-height, $font-weight, $font-style, $text-params);
+  } @else {
+    $font-size: $text-params;
+    $color: $font-size;
+    $line-height: $font-weight;
+    $font-weight: $font-style;
+    @include text($font-size, $color, $line-height, $font-weight, $font-style, $text-params);
+  }
+}
+
+@mixin text-single-line($width: 100px) {
+  width: $width;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin text-multi-line($line: 3) {
+  width: 300px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+}

@@ -1,0 +1,47 @@
+$position-default-location: (auto auto auto auto);
+
+$position-default-direction-list: (
+        "top",
+        "right",
+        "bottom",
+        "left"
+);
+
+@function getLocationList($location: (), $default: $position-default-location) {
+  @if (type-of($location) == list) {
+    @if (length($location) == 4) {
+      @return $location;
+    } @else if (length($location) == 3) {
+      @return (nth($location, 2) nth($location, 1) nth($location, 2) nth($location, 3));
+    } @else if (length($location) == 2) {
+      @return (nth($location, 1) nth($location, 2) nth($location, 1) nth($location, 2));
+    } @else if (length($location) == 1) {
+      @return (nth($location, 1) nth($location, 1) nth($location, 1) nth($location, 1));
+    } @else {
+      @return $default;
+    }
+  } @else {
+    @return $default;
+  }
+}
+
+@mixin position($position: relative, $location: $position-default-location) {
+  position: $position;
+  @if (type-of($location) == list) {
+    $finally-position: getLocationList($location);
+    @each $direction in $position-default-direction-list {
+      $nth-index: index($position-default-direction-list, $direction);
+      #{$direction}: nth($finally-position, $nth-index);
+    }
+  } @else if (type-of($location) == number and length($location) == 1) {
+    @each $direction in $position-default-direction-list {
+      #{$direction}: nth($location, 1);
+    }
+  } @else if (type-of($location) == map and length($location) > 0) {
+    @each $direction in $position-default-direction-list {
+      @if (map-has-key($location, $direction)) {
+        #{$direction}: map-get($location, $direction);
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@mixin mixin-property($property-name, $property-value, $property-default-value: null, $is-strict: false) {
+  @if ($is-strict) {
+    @if ($property-value != null) {
+      #{$property-name}: $property-value;
+    } @else if ($property-default-value != null) {
+      #{$property-name}: $property-default-value;
+    }
+  } @else {
+    @if ($property-value != null and $property-value != true) {
+      #{$property-name}: $property-value;
+    } @else if ($property-value == true and $property-default-value != null) {
+      #{$property-name}: $property-default-value;
+    }
+  }
+}
+
+@mixin mixin-properties-map($property-name, $properties-map, $properties-default-map) {
+
+}
+
+@mixin mixin-properties-list($property-name, $properties-list, $properties-map) {
+  @if ($property-name and type-of($properties-list) == list and type-of($properties-map) == map) {
+    @if (index($properties-list, $property-name) and map-has-key($properties-map, $property-name)) {
+      #{$property-name}: map-get($properties-map, $property-name);
+    }
+  }
+}

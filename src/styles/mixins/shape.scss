@@ -1,0 +1,60 @@
+$shape-default-color: #333;
+$shape-default-border-color: #eee;
+
+
+@mixin border($width: 1px, $color: #333, $style: solid) {
+  border-width: $width;
+  border-color: $color;
+  border-style: $style;
+}
+
+@mixin shape-rect($width: 200px, $height: 100px) {
+  width: $width;
+  height: $height;
+}
+
+@mixin shape-fill-rect($width, $height, $color: black) {
+  @include shape-rect($width, $height);
+  background-color: $color;
+}
+
+@mixin shape-border-rect($width, $height, $color: black, $border-width: 1px) {
+  @include shape-rect($width, $height);
+  @include border($border-width, $color);
+}
+
+@mixin shape-circle($radius: 100px) {
+  width: $radius;
+  height: $radius;
+  border-radius: 50%;
+}
+
+@mixin shape-fill-circle($radius, $color: black) {
+  @include shape-circle($radius);
+  background-color: $color;
+}
+
+@mixin shape-border-circle($radius, $color: black, $border-width: 1px) {
+  @include shape-circle($radius);
+  @include border($border-width, $color);
+}
+
+@mixin shape-isosceles-triangle($width: 100px, $color: black, $angle: 0) {
+  width: 0;
+  height: 0;
+  border-top: $width solid $color;
+  border-right: $width solid transparent;
+  border-bottom: $width solid transparent;
+  border-left: $width solid transparent;
+  transform: rotate(#{$angle}deg);
+}
+
+@mixin shape-right-triangle($width: 200px, $color: black, $angle: 0) {
+  width: 0;
+  height: 0;
+  border-top: $width solid $color;
+  border-right: $width solid $color;
+  border-bottom: $width solid transparent;
+  border-left: $width solid transparent;
+  transform: rotate(#{$angle}deg);
+}
