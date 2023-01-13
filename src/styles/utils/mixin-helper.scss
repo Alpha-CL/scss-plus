@@ -1,10 +1,10 @@
 /**
  * 设置属性
  *
- * @params {string} $property-name                        属性名
- * @params {any} $property-value                          属性值
- * @params {any | null} $property-default-value           属性默认值
- * @params {boolean} $is-strict                           是否严格模式
+ * @param {string} $property-name                          属性名
+ * @param {any} $property-value                            属性值
+ * @param {any} $property-default-value                    属性默认值
+ * @param {boolean} $is-strict                             是否严格模式
  */
 @mixin set-property($property-name, $property-value, $property-default-value: null, $is-strict: false) {
   @if ($property-name and $property-value) {
@@ -15,7 +15,7 @@
         #{$property-name}: $property-value;
       }
     } @else {
-      @if ($property-value == true or $property-default-value) {
+      @if (($property-value == true and $property-default-value) or $property-default-value) {
         #{$property-name}: $property-default-value;
       } @else {
         #{$property-name}: $property-value;
@@ -27,13 +27,13 @@
 /**
  * 根据集合设置属性
  *
- * @params {map} $map                                     属性集合
- * @params {map | null} $default-map                      属性默认值集合
- * @params {boolean} $is-strict                           是否严格模式
+ * @param {map} $map                                       属性集合
+ * @param {map | null} $default-map                        属性默认值集合
+ * @param {boolean} $is-strict                             是否严格模式
  */
-@mixin each-map($map: (), $default-map: null, $is-strict: false) {
-  @if (type-of($map) == map and length($map) > 0) {
-    @if (type-of($default-map) == map and length($default-map) > 0 and $is-strict) {
+@mixin set-property-by-each-map($map: (), $default-map: null, $is-strict: false) {
+  @if (type-of($map) == map) {
+    @if (type-of($default-map) == map and $is-strict) {
       @each $key, $value in $map {
         @if (map-has-key($default-map, $key)) {
           $value: map-get($default-map, $key);
@@ -49,39 +49,92 @@
 }
 
 /**
+ * 根据列表设置属性
  *
+ * @param {string} $key                                    属性名
+ * @param {list} $list                                     属性名列表
+ * @param {map} $map                                       属性集合
  */
-@mixin each-properties-map($properties-map, $properties-default-map: null, $is-strict: false) {
-  @if (type-of($properties-map) == map and length($properties-map) > 0) {
-    @if (type-of($properties-default-map) == map and length($properties-default-map) > 0 and $is-strict) {
-      @include each-map($properties-map, $properties-default-map, $is-strict);
-    } @else {
-      @include each-map($properties-map);
-    }
-  }
-}
-
-@mixin each-list($key, $list: (), $map: ()) {
+@mixin set-property-by-list($real-key, $list: (), $map: (), $short-key: null) {
   @if (
-          $key and
+          $real-key and
           (type-of($list) == list and length($list) > 0) and
-          (type-of($map) == map and length($map) > 0)
+          (type-of($map) == map)
   ) {
-    @if (index($list, $key) != null and map-has-key($map, $key)) {
-      #{$key}: map-get($map, $key);
+    @if ((index($list, $real-key) != null or index($list, $short-key) != null) and map-has-key($map, $real-key)) {
+      #{$real-key}: map-get($map, $real-key);
     }
   }
 }
 
-@mixin each-properties-list($property-name, $properties-default-list: null, $is-strict: false) {
+/**
+ * 根据类型设置属性
+ */
+@mixin set-property-by-type($type) {
+
 }
 
+/**
+ * 设置单个属性
+ *
+ * @param {string} $property-name                          属性名
+ * @param {any} $property-value                            属性值
+ * @param {any} $property-default-value                    属性默认值
+ * @param {boolean} $is-strict                             是否严格模式
+ */
 @mixin mixin-property($property-name, $property-value, $property-default-value: null, $is-strict: false) {
   @include set-property($property-name, $property-value, $property-default-value, $is-strict);
 }
 
+/**
+ *
+ *
+ *
+ */
 @mixin mixin-properties-map($properties-map, $properties-default-map: null, $is-strict: false) {
+  @if (type-of($properties-map) == map) {
+    @if (type-of($properties-default-map) == map and $is-strict) {
+      @include set-property-by-each-map($properties-map, $properties-default-map, $is-strict);
+    } @else {
+      @include set-property-by-each-map($properties-map);
+    }
+  }
 }
 
-@mixin mixin-properties-list($property-name, $properties-list, $properties-map) {
+/**
+ * 根据 属性名集合 设置属性
+ *
+ * @param {map} $properties-key-map                      属性名集合( 简写属性名: 真实属性名 )
+ * @param {list} $properties-list                        简写属性名列表
+ * @param {map} $properties-map                          属性集合
+ */
+@mixin mixin-properties-list($properties-key-map, $properties-list, $properties-map) {
+  @if (type-of($properties-key-map) == map) {
+    @each $short-key, $real-key in $properties-key-map {
+      @if (index($properties-list, $short-key) != null and map-has-key($properties-map, $real-key)) {
+        @include set-property-by-list($real-key, $properties-list, $properties-map, $short-key);
+      }
+    }
+  }
 }
+
+/**
+ * 获取第一个参数不是 集合 或 列表的 所有参数
+ */
+@function get-real-params($args...) {
+  $first-param: nth($args, 1);
+  //@debug type-of($first-param);
+  @if (type-of($first-param) == map or type-of($first-param) == list) {
+    $real-params: ();
+    @each $param in $args {
+      @if ($param != $first-param) {
+        $real-params: append($real-params, $param);
+      }
+    }
+    @return $real-params;
+  } @else {
+    @return $args;
+  }
+}
+
+

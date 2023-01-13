@@ -1,0 +1,118 @@
+$type-string:               string;
+$type-number:               number;
+$type-boolean:              bool;
+$type-null:                 type-of(null);
+$type-list:                 list;
+$type-map:                  map;
+$type-color:                color;
+$type-undefined:            'undefined';
+$type-nan:                  'NaN';
+
+$type-function:             function;
+$type-arglist:              arglist;
+
+
+$type-string-value:         "string";
+$type-number-value:         "number";
+$type-boolean-value:        "boolean";
+$type-null-value:           "null";
+$type-list-value:           "list";
+$type-map-value:            "map";
+$type-color-value:          "color";
+$type-undefined-value:      $type-undefined;
+$type-nan-value:            $type-nan;
+
+$type-function-value:       "function";
+$type-arglist-value:        "arglist";
+
+@function isTargetType($target, $type, $complex: false) {
+  @if ($complex) {
+    @if (type-of($target) == $type and length($target) > 0) {
+      @return true;
+    }
+  } @else {
+    @if (type-of($target) == $type) {
+      @return true;
+    }
+  }
+  @return false;
+}
+
+@function isEqual($value1, $value2) {
+  @if ($value1 == $value2) {
+    @return true;
+  }
+  @return false;
+}
+
+@function isString($target) {
+  @return isTargetType($target, $type-string);
+}
+
+@function isNumber($target) {
+  @return isTargetType($target, $type-number);
+}
+
+@function isBool($target) {
+  @return isTargetType($target, $type-boolean);
+}
+
+@function isNull($target) {
+  @return isTargetType($target, $type-null);
+}
+
+@function isColor($target) {
+  @return isTargetType($target, $type-color);
+}
+
+@function isList($target) {
+  @return isTargetType($target, list);
+}
+
+@function isMap($target) {
+  @return isTargetType($target, map, true);
+}
+
+@function isZero($target) {
+  @if ((isNumber($target) and $target == 0) or (isString($target) and $target == '0')) {
+    @return true;
+  }
+  @return false;
+}
+
+@function isFalse($target) {
+  @if ($target == false or $target == 'false') {
+    @return true;
+  }
+  @return false;
+}
+
+@function isEmptyString($target) {
+  @if (type-of($target) == 'string' and str-length($target) == 0) {
+    @return true;
+  }
+  @return false;
+}
+
+@function isUndefined($target) {
+  @return isEqual($target, $type-undefined);
+}
+
+@function isNaN($target) {
+  @return isEqual($target, $type-nan);
+}
+
+@function toBoolean($target) {
+  @if (
+          isNull($target) or
+          isEmptyString($target) or
+          isFalse($target) or
+          isZero($target) or
+          isUndefined($target) or
+          isNaN($target)
+  ) {
+    @return false;
+  } @else {
+    @return true;
+  }
+}
