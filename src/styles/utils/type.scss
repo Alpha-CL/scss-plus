@@ -74,7 +74,7 @@ $type-arglist-value:        "arglist";
 }
 
 @function isZero($target) {
-  @if ((isNumber($target) and $target == 0) or (isString($target) and $target == '0')) {
+  @if ($target == 0 or $target == '0') {
     @return true;
   }
   @return false;
