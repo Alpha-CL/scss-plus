@@ -56,17 +56,19 @@
  * @param {map} $keys-map                                  属性集合
  * @param {string} $short-key                              简写属性名
  */
-@mixin set-property-by-list($real-key, $keys-list: (), $keys-map: (), $short-key: null) {
+@mixin set-property-by-list($real-property-name, $properties-name-list: (), $properties-map: (), $short-property-name: null) {
   @if (
-          $real-key and
-          (type-of($keys-list) == list and length($keys-list) > 0) and
-          (type-of($keys-map) == map)
+          $real-property-name and
+          (type-of($properties-name-list) == list and length($properties-name-list) > 0) and
+          (type-of($properties-map) == map)
   ) {
     @if (
-            (index($keys-list, $real-key) != null and map-has-key($keys-map, $real-key)) or
-            (index($keys-list, $short-key) != null and map-has-key($keys-map, $real-key))
+            (index($properties-name-list, $real-property-name) != null or index($properties-name-list, $short-property-name) != null)
+            and map-has-key($properties-map, $real-property-name)
     ) {
-      #{$real-key}: map-get($keys-map, $real-key);
+      #{$real-property-name}: map-get($properties-map, $real-property-name);
+    } @else if (index($properties-name-list, $short-property-name) != null and map-has-key($properties-map, $short-property-name)) {
+      #{$real-property-name}: map-get($properties-map, $short-property-name);
     }
   }
 }
