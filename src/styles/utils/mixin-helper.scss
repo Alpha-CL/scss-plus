@@ -1,0 +1,87 @@
+/**
+ * 设置属性
+ *
+ * @params {string} $property-name                        属性名
+ * @params {any} $property-value                          属性值
+ * @params {any | null} $property-default-value           属性默认值
+ * @params {boolean} $is-strict                           是否严格模式
+ */
+@mixin set-property($property-name, $property-value, $property-default-value: null, $is-strict: false) {
+  @if ($property-name and $property-value) {
+    @if ($is-strict) {
+      @if ($property-default-value) {
+        #{$property-name}: $property-default-value;
+      } @else {
+        #{$property-name}: $property-value;
+      }
+    } @else {
+      @if ($property-value == true or $property-default-value) {
+        #{$property-name}: $property-default-value;
+      } @else {
+        #{$property-name}: $property-value;
+      }
+    }
+  }
+}
+
+/**
+ * 根据集合设置属性
+ *
+ * @params {map} $map                                     属性集合
+ * @params {map | null} $default-map                      属性默认值集合
+ * @params {boolean} $is-strict                           是否严格模式
+ */
+@mixin each-map($map: (), $default-map: null, $is-strict: false) {
+  @if (type-of($map) == map and length($map) > 0) {
+    @if (type-of($default-map) == map and length($default-map) > 0 and $is-strict) {
+      @each $key, $value in $map {
+        @if (map-has-key($default-map, $key)) {
+          $value: map-get($default-map, $key);
+        }
+        #{$key}: $value;
+      }
+    } @else {
+      @each $key, $value in $map {
+        #{$key}: $value;
+      }
+    }
+  }
+}
+
+/**
+ *
+ */
+@mixin each-properties-map($properties-map, $properties-default-map: null, $is-strict: false) {
+  @if (type-of($properties-map) == map and length($properties-map) > 0) {
+    @if (type-of($properties-default-map) == map and length($properties-default-map) > 0 and $is-strict) {
+      @include each-map($properties-map, $properties-default-map, $is-strict);
+    } @else {
+      @include each-map($properties-map);
+    }
+  }
+}
+
+@mixin each-list($key, $list: (), $map: ()) {
+  @if (
+          $key and
+          (type-of($list) == list and length($list) > 0) and
+          (type-of($map) == map and length($map) > 0)
+  ) {
+    @if (index($list, $key) != null and map-has-key($map, $key)) {
+      #{$key}: map-get($map, $key);
+    }
+  }
+}
+
+@mixin each-properties-list($property-name, $properties-default-list: null, $is-strict: false) {
+}
+
+@mixin mixin-property($property-name, $property-value, $property-default-value: null, $is-strict: false) {
+  @include set-property($property-name, $property-value, $property-default-value, $is-strict);
+}
+
+@mixin mixin-properties-map($properties-map, $properties-default-map: null, $is-strict: false) {
+}
+
+@mixin mixin-properties-list($property-name, $properties-list, $properties-map) {
+}
