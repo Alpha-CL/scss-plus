@@ -9,13 +9,13 @@
 @mixin set-property($property-name, $property-value, $property-default-value: null, $is-strict: false) {
   @if ($property-name) {
     @if ($is-strict) {
-      @if ($property-default-value and not $property-value) {
-        #{$property-name}: $property-default-value;
-      } @else {
+      @if ($property-value) {
         #{$property-name}: $property-value;
+      } @else {
+        #{$property-name}: $property-default-value;
       }
     } @else {
-      @if ((not $property-value and $property-value == true) and $property-default-value) {
+      @if ($property-value == true and $property-default-value) {
         #{$property-name}: $property-default-value;
       } @else {
         #{$property-name}: $property-value;
@@ -33,16 +33,23 @@
  */
 @mixin set-property-by-each-map($map: (), $default-map: null, $is-strict: false) {
   @if (type-of($map) == map) {
-    @if (type-of($default-map) == map and $is-strict) {
+    @if ($is-strict) {
       @each $key, $value in $map {
-        @if (map-has-key($default-map, $key)) {
-          $value: map-get($default-map, $key);
+        @if ($value and $value != true) {
+          #{$key}: $value;
+        } @else if (not $value and map-has-key($default-map, $key)) {
+          #{$key}: map-get($default-map, $key);
+        } @else if ($value == true and map-has-key($default-map, $key)) {
+          #{$key}: map-get($default-map, $key);
         }
-        #{$key}: $value;
       }
     } @else {
       @each $key, $value in $map {
-        #{$key}: $value;
+        @if ($value) {
+          #{$key}: $value;
+        } @else if (not $value and map-has-key($default-map, $key)) {
+          #{$key}: map-get($default-map, $key);
+        }
       }
     }
   }
@@ -57,18 +64,21 @@
  * @param {string} $short-key                              简写属性名
  */
 @mixin set-property-by-list($real-property-name, $properties-name-list: (), $properties-map: (), $short-property-name: null) {
-  @if (
-          $real-property-name and
-          (type-of($properties-name-list) == list and length($properties-name-list) > 0) and
-          (type-of($properties-map) == map)
-  ) {
-    @if (
-            (index($properties-name-list, $real-property-name) != null or index($properties-name-list, $short-property-name) != null)
-            and map-has-key($properties-map, $real-property-name)
-    ) {
-      #{$real-property-name}: map-get($properties-map, $real-property-name);
-    } @else if (index($properties-name-list, $short-property-name) != null and map-has-key($properties-map, $short-property-name)) {
-      #{$real-property-name}: map-get($properties-map, $short-property-name);
+  @if ($real-property-name and type-of($properties-map) == map and map-has-key($properties-map, $real-property-name)) {
+    @if ($short-property-name) {
+      @if ((index($properties-name-list, $real-property-name) != null)) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      } @else if ((index($properties-name-list, $short-property-name) != null)) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      } @else if ($real-property-name == $properties-name-list) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      }
+    } @else {
+      @if (index($properties-name-list, $real-property-name) != null) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      } @else if ($real-property-name == $properties-name-list) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      }
     }
   }
 }
@@ -144,3 +154,17 @@
     @return $args;
   }
 }
+
+
+//$test-list: (1, 2, 3);
+//
+//@debug index($test-list, a);
+
+
+@include set-property-by-list(
+                font-size,
+                        (font-size),
+                (
+                        font-size: 20px
+                )
+);

@@ -1,3 +1,51 @@
-.index {
-  
+//@import "../styles/utils/mixin-helper";
+//@import "../styles/mixins/position";
+
+
+@mixin set-property-by-list($real-property-name, $properties-name-list: (), $properties-map: (), $short-property-name: null) {
+  @if ($real-property-name and type-of($properties-map) == map and map-has-key($properties-map, $real-property-name)) {
+    @if ($short-property-name) {
+      @if ((index($properties-name-list, $real-property-name) != null)) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      } @else if ((index($properties-name-list, $short-property-name) != null)) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      } @else if ($real-property-name == $properties-name-list) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      }
+    } @else {
+      @if (index($properties-name-list, $real-property-name) != null) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      } @else if ($real-property-name == $properties-name-list) {
+        #{$real-property-name}: map-get($properties-map, $real-property-name);
+      }
+    }
+  }
+}
+
+.wrapper {
+
+  //@include position(fixed, (0));
+
+  border: 1px solid;
+
+  .box {
+
+    color: red;
+
+    //@include set-property(color, red, green);
+
+    //@include set-property-by-each-map((
+    //        color: red,
+    //), (
+    //        color: green,
+    //), true);
+
+    @include set-property-by-list(
+                    font-size,
+                            (font-size),
+                    (
+                            font-size: 40px
+                    ),
+    );
+  }
 }

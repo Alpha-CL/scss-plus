@@ -15,12 +15,8 @@ const Comp: React.FC<Props> = (props: Props) => {
 	return (
 		<React.Fragment>
 			
-			indexComp
-			{props.children}
-			{JSON.stringify(props)}
-			
 			<div className={styles.wrapper}>
-				<div className={styles.box}/>
+				<div className={styles.box}>box</div>
 			</div>
 		
 		</React.Fragment>
