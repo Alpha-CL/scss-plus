@@ -4,7 +4,22 @@ $base-screen-size: 750;
   @return $client-with / $design-width * 100vw;
 }
 
-
-@function px2vw-plus($client-with, $design-width: $base-screen-size) {
-  @return $client-with / $design-width * 100vw;
+@mixin px2vw-plus($properties-map, $design-width: $base-screen-size) {
+  @if (type-of($properties-map) == map) {
+    @each $property, $px-values in $properties-map {
+      @if type-of($px-values) == "number" {
+        #{$property}: px2vw($px-values, $design-width);
+      } @else {
+        $vw-values: ();
+        @each $value in $px-values {
+          @if $value == 0 or type-of($value) != "number" {
+            $rem-values: append($vw-values, $value);
+          } @else {
+            $rem-values: px2vw($value, $design-width);
+          }
+        }
+        #{$property}: $vw-values;
+      }
+    }
+  }
 }

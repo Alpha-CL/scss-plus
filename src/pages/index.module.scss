@@ -1,5 +1,8 @@
-@import "../styles/utils/mixin-helper";
-//@import "../styles/mixins/position";
+@import "../styles";
+
+#{test} {
+  color: red;
+}
 
 
 .wrapper {
@@ -9,22 +12,6 @@
   border: 1px solid;
 
   .box {
-
-    //color: red;
-
-    //@include set-property(color, aa, null, true);
-
-    //@include mixin-property(color, red, null);
-
-    //@include mixin-properties-map();
-
-    //@include mixin-properties-list(
-    //                        (font-size, line-height, color),
-    //                        //(size: font-size, height: line-height, color: color),
-    //                        (font-size, line-height, color),
-    //                        //(size, height, color),
-    //                        (color: red, line-height: 40px, font-size: 20px)
-    //);
 
 
   }

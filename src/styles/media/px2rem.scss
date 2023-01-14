@@ -2,10 +2,11 @@
 
 // 根节点的基础字体大小
 $px2rem-baseline-px: 16px;
+$px2rem-support-for-ie: false;
 
-@mixin px2rem-plus($property-list, $baseline-px: $px2rem-baseline-px, $support-for-ie: false) {
-  @if (type-of($property-list) == map and length($property-list) > 0) {
-    @each $key, $val in $property-list {
+@mixin px2rem-plus($properties-map, $baseline-px: $px2rem-baseline-px, $support-for-ie: $px2rem-support-for-ie) {
+  @if (type-of($properties-map) == map) {
+    @each $key, $val in $properties-map {
       @include px2rem($key, $val, $baseline-px, $support-for-ie);
     }
   }
