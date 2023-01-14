@@ -148,7 +148,6 @@
  */
 @function get-real-params($args...) {
   $first-param: nth($args, 1);
-  //@debug type-of($first-param);
   @if (type-of($first-param) == map or type-of($first-param) == list) {
     $real-params: ();
     @each $param in $args {
