@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "px2rem.scss": "^0.2.3",
+    "sass": "^1.57.1",
     "umi": "^4.0.43"
   },
   "devDependencies": {

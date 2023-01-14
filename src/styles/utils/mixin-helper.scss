@@ -11,14 +11,16 @@
     @if ($is-strict) {
       @if ($property-value) {
         #{$property-name}: $property-value;
-      } @else {
+      } @else if (not $property-value and $property-default-value) {
         #{$property-name}: $property-default-value;
       }
     } @else {
-      @if ($property-value == true and $property-default-value) {
-        #{$property-name}: $property-default-value;
-      } @else {
+      @if ($property-value and $property-value != true) {
         #{$property-name}: $property-value;
+      } @else if ($property-value == true and $property-default-value) {
+        #{$property-name}: $property-default-value;
+      } @else if (not $property-value and $property-default-value) {
+        #{$property-name}: $property-default-value;
       }
     }
   }
@@ -122,14 +124,22 @@
 /**
  * 根据 属性名集合 设置属性
  *
- * @param {map} $properties-key-map                      属性名集合( 简写属性名: 真实属性名 )
+ * @param {map | list} $properties-key-map               属性名集合( 简写属性名: 真实属性名 )
  * @param {list} $properties-list                        简写属性名列表
  * @param {map} $properties-map                          属性集合
  */
-@mixin mixin-properties-list($properties-key-map, $properties-list, $properties-map) {
-  @if (type-of($properties-key-map) == map) {
-    @each $short-key, $real-key in $properties-key-map {
-      @if (index($properties-list, $short-key) != null and map-has-key($properties-map, $real-key)) {
+@mixin mixin-properties-list($properties-key, $properties-list, $properties-map) {
+  @if (type-of($properties-key) == list) {
+    @each $real-key in $properties-key {
+      @if (index($properties-list, $real-key) != null and map-has-key($properties-map, $real-key)) {
+        @include set-property-by-list($real-key, $properties-list, $properties-map);
+      }
+    }
+  } @else if (type-of($properties-key) == map) {
+    @each $short-key, $real-key in $properties-key {
+      @if (index($properties-list, $real-key) != null and map-has-key($properties-map, $real-key)) {
+        @include set-property-by-list($real-key, $properties-list, $properties-map, $real-key);
+      } @else if (index($properties-list, $short-key) != null and map-has-key($properties-map, $real-key)) {
         @include set-property-by-list($real-key, $properties-list, $properties-map, $short-key);
       }
     }
@@ -137,7 +147,11 @@
 }
 
 /**
- * 获取第一个参数不是 集合 或 列表的 所有参数
+ * 获取第一个参数不是 集合 或 列表 的所有参数
+ *
+ * ((),1,2,3) => (1,2,3)
+ * ((foo:bar),1,2,3) => (1,2,3)
+ * (1,2,3) => (1,2,3)
  */
 @function get-real-params($args...) {
   $first-param: nth($args, 1);
@@ -154,17 +168,3 @@
     @return $args;
   }
 }
-
-
-//$test-list: (1, 2, 3);
-//
-//@debug index($test-list, a);
-
-
-@include set-property-by-list(
-                font-size,
-                        (font-size),
-                (
-                        font-size: 20px
-                )
-);
