@@ -117,9 +117,9 @@
 /**
  * 根据 属性名集合 设置属性
  *
- * @param {map | list} $properties-key-map               属性名集合( 简写属性名: 真实属性名 )
- * @param {list} $properties-list                        简写属性名列表
- * @param {map} $properties-map                          属性集合
+ * @param {map | list} $properties-key-map                 属性名集合( 简写属性名: 真实属性名 )
+ * @param {list} $properties-list                          简写属性名列表
+ * @param {map} $properties-map                            属性集合
  */
 @mixin mixin-properties-list($properties-key, $properties-list, $properties-map) {
   @if (type-of($properties-key) == list) {
@@ -134,6 +134,25 @@
         @include set-property-by-list($real-key, $properties-list, $properties-map, $real-key);
       } @else if (index($properties-list, $short-key) != null and map-has-key($properties-map, $real-key)) {
         @include set-property-by-list($real-key, $properties-list, $properties-map, $short-key);
+      }
+    }
+  }
+}
+
+@mixin set-property-by-prefix($property-name, $property-value, $is-prefix: false) {
+  @if (property-name and property-value) {
+    $value-type: type-of($property-value);
+    @if ($value-type == number or $value-type == string) {
+      #{$property-name}: $property-value;
+    } @else if ($value-type == list and length($property-value) > 0) {
+      #{$property-name}: $property-value;
+    } @else if ($value-type == map) {
+      @each $name, $value in $property-value {
+        @if ($is-prefix) {
+          #{$property-name}-#{$name}: $value;
+        } @else {
+          #{$name}: $value;
+        }
       }
     }
   }

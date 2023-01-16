@@ -1,11 +1,17 @@
-$wrapper-default-width: auto;
-$wrapper-default-min-width: auto;
-$wrapper-default-max-width: auto;
-$wrapper-default-width: ($wrapper-default-max-width $wrapper-default-min-width $wrapper-default-max-width);
-$wrapper-default-height: auto;
-$wrapper-default-min-height: auto;
-$wrapper-default-max-height: auto;
-$wrapper-default-height-list: ($wrapper-default-height $wrapper-default-min-height $wrapper-default-max-height);
+@import "../utils/mixin-helper";
+
+$wrapper-default-width: auto !default;
+$wrapper-default-min-width: auto !default;
+$wrapper-default-max-width: auto !default;
+$wrapper-default-width: ($wrapper-default-max-width $wrapper-default-min-width $wrapper-default-max-width) !default;
+$wrapper-default-height: auto !default;
+$wrapper-default-min-height: auto !default;
+$wrapper-default-max-height: auto !default;
+$wrapper-default-height-list: ($wrapper-default-height $wrapper-default-min-height $wrapper-default-max-height) !default;
+
+$wrapper-default-margin: null !default;
+$wrapper-default-padding: null !default;
+$wrapper-default-overflow: hidden hidden !default;
 
 /**
  * 设置容器长宽
@@ -14,18 +20,17 @@ $wrapper-default-height-list: ($wrapper-default-height $wrapper-default-min-heig
  * params {string | number | list} $property-value
  */
 @mixin wrapper-size($property-name, $property-value) {
-  @if ($property-name) {
+  @if ($property-name and $property-value) {
     @if (type-of($property-value) == list) {
+      $min-property-name: min-#{$property-name};
+      $max-property-name: max-#{$property-name};
       $length: length($property-value);
       @if ($length == 1) {
         #{$property-name}: nth($property-value, 1);
       } @else if ($length == 2) {
-        $min-property-name: min-#{$property-name};
         #{$property-name}: nth($property-value, 1);
         #{$min-property-name}: nth($property-value, 2);
       } @else if ($length == 3) {
-        $min-property-name: min-#{$property-name};
-        $max-property-name: max-#{$property-name};
         #{$property-name}: nth($property-value, 1);
         #{$min-property-name}: nth($property-value, 2);
         #{$max-property-name}: nth($property-value, 3);
@@ -36,23 +41,25 @@ $wrapper-default-height-list: ($wrapper-default-height $wrapper-default-min-heig
   }
 }
 
-@mixin wrapper-margin() {
+@mixin wrapper-margin-and-padding($property-name, $property-value) {
+  @include set-property-by-prefix($property-name, $property-value, true);
 }
 
-@mixin wrapper-padding() {
-}
-
-// 引入 overflow.scss
 @mixin wrapper-overflow() {
 }
 
-// 引入 border.scss
-@mixin wrapper-border() {
-}
-
 @mixin wrapper(
+  $margin: null,
+  $padding: null,
   $width: $wrapper-default-width,
   $height: $wrapper-default-height,
+  $overflow: $wrapper-default-overflow
 ) {
-
+  @include wrapper-margin-and-padding(margin, $margin);
+  @include wrapper-margin-and-padding(padding, $padding);
+  @include wrapper-size(width, $width);
+  @include wrapper-size(height, $height);
+  @if ($overflow) {
+    overflow: $overflow;
+  }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./index.module.scss";
+import classNames from "classnames";
 
 // import classNames from "classnames";
 
@@ -15,8 +16,8 @@ const Comp: React.FC<Props> = (props: Props) => {
 	return (
 		<React.Fragment>
 			
-			<div className={styles.wrapper}>
-				<div className={styles.box}>box</div>
+			<div className={classNames([styles.wrapper, styles.pc, 'clear-float'])}>
+				<div className={classNames([styles.box, 'float-right'])}>box</div>
 			</div>
 		
 		</React.Fragment>

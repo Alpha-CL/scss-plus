@@ -1,0 +1,46 @@
+@function getMediaBreakpoint($key, $breakpoints-map: $media-query-breakpoints) {
+  @if (map-has-key($breakpoints-map, $key)) {
+    @return map-get($breakpoints-map, $key);
+  }
+}
+
+@function getMediaQuery($key, $devices-map: $media-device-query) {
+  @if (map-has-key($devices-map, $key)) {
+    @return map-get($devices-map, $key);
+  }
+}
+
+@function createMediaQuery($conditions, $device: $media-device) {
+  @return '#{$device} and #{$conditions}';
+}
+
+$media-device: screen !default;
+
+$media-query-breakpoints: (
+        'micro': 320px,
+        'mini': 480px,
+        'small': 768px,
+        'medium': 960px,
+        'large': 1440px,
+        'huge': 2560px,
+        'giant': 5120px
+) !default;
+
+$media-device-query: (
+        'pc': '(min-width: #{getMediaBreakpoint('micro')})',
+        'mobile': '(max-width: #{getMediaBreakpoint('micro')})',
+) !default;
+
+$media-query-pc: createMediaQuery(#{getMediaQuery('pc')});
+$media-query-mobile: createMediaQuery(#{getMediaQuery('mobile')});
+
+.media-demo {
+
+  @media #{$media-query-pc} {
+    background-color: red;
+  }
+
+  @media #{$media-query-mobile} {
+    background-color: blue;
+  }
+}

@@ -1,0 +1,45 @@
+$float-direction: (
+        'left',
+        'right'
+) !default;
+
+$float-default-direction: left;
+$float-default-class-name: null;
+
+%after-clear-both {
+  display: block;
+  content: '';
+  clear: both;
+}
+
+@mixin clear-float($parent: null) {
+  @if ($parent != null and type-of($parent) == string) {
+    .#{$parent}:after {
+      @extend %after-clear-both;
+    }
+  } @else {
+    &:after {
+      @extend %after-clear-both;
+    }
+  }
+}
+
+@mixin float($direction: $float-default-direction, $class-name) {
+  @if ($class-name != null and type-of($class-name) == string) {
+    .#{$class-name} {
+      float: $direction;
+    }
+  } @else {
+    & {
+      float: $direction;
+    }
+  }
+}
+
+@mixin float-left($class-name: null) {
+  @include float(left, $class-name);
+}
+
+@mixin float-right($class-name: null) {
+  @include float(right, $class-name);
+}
