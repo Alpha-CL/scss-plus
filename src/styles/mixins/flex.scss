@@ -3,7 +3,6 @@ $flex-default-wrap: wrap;
 $flex-default-spindle: flex-start;
 $flex-default-secondary: flex-start;
 
-
 @mixin flex($direction: $flex-default-direction, $wrap: $flex-default-wrap, $spindle: $flex-default-spindle, $secondary: $flex-default-secondary) {
   display: flex;
   flex-flow: $direction $wrap;
