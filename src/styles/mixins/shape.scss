@@ -3,7 +3,7 @@ $shape-default-border-color: #eee;
 $shape-default-border-width: 1px;
 $shape-default-size: 100px;
 
-@mixin border($width: $shape-default-border-width, $color: $shape-default-color, $style: solid) {
+@mixin border($width: $shape-default-border-width, $color: #333, $style: solid) {
   border-width: $width;
   border-color: $color;
   border-style: $style;
@@ -22,6 +22,14 @@ $shape-default-size: 100px;
 @mixin shape-border-rect($width, $height, $color: $shape-default-color, $border-width: $shape-default-border-width) {
   @include shape-rect($width, $height);
   @include border($border-width, $color);
+}
+
+@mixin vertical-line($color, $width: 1px){
+  @include shape-fill-rect($width, 100%, $color);
+}
+
+@mixin horizontal-line($color, $height: 1px){
+  @include shape-fill-rect(100%, $height, $color);
 }
 
 @mixin shape-circle($radius: $shape-default-size) {
@@ -50,7 +58,7 @@ $shape-default-size: 100px;
   transform: rotate(#{$angle}deg);
 }
 
-@mixin shape-right-triangle($width: $shape-default-size, $color: $shape-default-color, $angle: 0) {
+@mixin shape-right-triangle($width: 200px, $color: $shape-default-color, $angle: 0) {
   width: 0;
   height: 0;
   border-top: $width solid $color;

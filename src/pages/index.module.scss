@@ -1,15 +1,29 @@
 @import "../styles";
 
 div {
-  border: 1px solid;
+  //border: 1px solid;
 }
 
 .wrapper {
 
-  @include wrapper(null, null, 100px, 100px, hidden);
+  //@include wrapper(null, null, 100px, 100px, hidden);
 
   .demo {
 
+  }
+
+  .rect {
+    //@include shape-fill-rect(100%, 1px, red);
+    @include horizontal-line(black);
+  }
+
+
+  .circle {
+    //@include shape-border-circle(100px, green);
+  }
+
+  .triangle {
+    //@include shape-isosceles-triangle(100px, blue);
   }
 
 }

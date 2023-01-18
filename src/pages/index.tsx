@@ -18,6 +18,9 @@ const Comp: React.FC<Props> = (props: Props) => {
 			
 			<div className={classNames([styles.wrapper])}>
 				<div className={classNames([styles.box])}>box</div>
+				<div className={classNames([styles.rect])}></div>
+				<div className={classNames([styles.circle])}></div>
+				<div className={classNames([styles.triangle])}>triangle</div>
 			</div>
 		
 		</React.Fragment>
