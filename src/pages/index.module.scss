@@ -13,7 +13,7 @@ div {
   }
 
   .rect {
-    //@include shape-fill-rect(100%, 1px, red);
+    //@include shape-fill-rect(100px, 100px);
     @include horizontal-line(black);
   }
 
