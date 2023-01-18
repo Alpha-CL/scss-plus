@@ -1,44 +1,46 @@
 $shape-default-color: #333;
 $shape-default-border-color: #eee;
+$shape-default-border-width: 1px;
+$shape-default-size: 100px;
 
-@mixin border($width: 1px, $color: #333, $style: solid) {
+@mixin border($width: $shape-default-border-width, $color: $shape-default-color, $style: solid) {
   border-width: $width;
   border-color: $color;
   border-style: $style;
 }
 
-@mixin shape-rect($width: 200px, $height: 100px) {
+@mixin shape-rect($width: $shape-default-size, $height: $shape-default-size) {
   width: $width;
   height: $height;
 }
 
-@mixin shape-fill-rect($width, $height, $color: black) {
+@mixin shape-fill-rect($width, $height, $color: $shape-default-color) {
   @include shape-rect($width, $height);
   background-color: $color;
 }
 
-@mixin shape-border-rect($width, $height, $color: black, $border-width: 1px) {
+@mixin shape-border-rect($width, $height, $color: $shape-default-color, $border-width: $shape-default-border-width) {
   @include shape-rect($width, $height);
   @include border($border-width, $color);
 }
 
-@mixin shape-circle($radius: 100px) {
+@mixin shape-circle($radius: $shape-default-size) {
   width: $radius;
   height: $radius;
   border-radius: 50%;
 }
 
-@mixin shape-fill-circle($radius, $color: black) {
+@mixin shape-fill-circle($radius, $color: $shape-default-color) {
   @include shape-circle($radius);
   background-color: $color;
 }
 
-@mixin shape-border-circle($radius, $color: black, $border-width: 1px) {
+@mixin shape-border-circle($radius, $color: $shape-default-color, $border-width: $shape-default-border-width) {
   @include shape-circle($radius);
   @include border($border-width, $color);
 }
 
-@mixin shape-isosceles-triangle($width: 100px, $color: black, $angle: 0) {
+@mixin shape-isosceles-triangle($width: $shape-default-size, $color: $shape-default-color, $angle: 0) {
   width: 0;
   height: 0;
   border-top: $width solid $color;
@@ -48,7 +50,7 @@ $shape-default-border-color: #eee;
   transform: rotate(#{$angle}deg);
 }
 
-@mixin shape-right-triangle($width: 200px, $color: black, $angle: 0) {
+@mixin shape-right-triangle($width: $shape-default-size, $color: $shape-default-color, $angle: 0) {
   width: 0;
   height: 0;
   border-top: $width solid $color;

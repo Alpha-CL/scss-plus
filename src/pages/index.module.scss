@@ -1,8 +1,15 @@
 @import "../styles";
 
+div {
+  border: 1px solid;
+}
+
 .wrapper {
+
+  @include wrapper(null, null, 100px, 100px, hidden);
 
   .demo {
 
   }
+
 }

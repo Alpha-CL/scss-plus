@@ -16,8 +16,8 @@ const Comp: React.FC<Props> = (props: Props) => {
 	return (
 		<React.Fragment>
 			
-			<div className={classNames([styles.wrapper, styles.pc, 'clear-float'])}>
-				<div className={classNames([styles.box, 'float-right'])}>box</div>
+			<div className={classNames([styles.wrapper])}>
+				<div className={classNames([styles.box])}>box</div>
 			</div>
 		
 		</React.Fragment>
