@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "@@/exports";
-import "@/styles/global/index.scss";
+import "@/styles/reboot.scss";
 // import styles from "./index.module.scss";
 // import classNames from "classnames";
 
