@@ -1,7 +1,6 @@
 $shape-default-color: #333;
 $shape-default-border-color: #eee;
 
-
 @mixin border($width: 1px, $color: #333, $style: solid) {
   border-width: $width;
   border-color: $color;

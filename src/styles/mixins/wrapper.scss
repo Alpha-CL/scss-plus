@@ -11,7 +11,7 @@ $wrapper-default-height-list: ($wrapper-default-height $wrapper-default-min-heig
 
 $wrapper-default-margin: null !default;
 $wrapper-default-padding: null !default;
-$wrapper-default-overflow: hidden hidden !default;
+$wrapper-default-overflow: auto auto !default;
 
 /**
  * 设置容器长宽
@@ -41,11 +41,8 @@ $wrapper-default-overflow: hidden hidden !default;
   }
 }
 
-@mixin wrapper-margin-and-padding($property-name, $property-value) {
+@mixin wrapper-box-size($property-name, $property-value) {
   @include set-property-by-prefix($property-name, $property-value, true);
-}
-
-@mixin wrapper-overflow() {
 }
 
 @mixin wrapper(
@@ -55,8 +52,8 @@ $wrapper-default-overflow: hidden hidden !default;
   $height: $wrapper-default-height,
   $overflow: $wrapper-default-overflow
 ) {
-  @include wrapper-margin-and-padding(margin, $margin);
-  @include wrapper-margin-and-padding(padding, $padding);
+  @include wrapper-box-size(margin, $margin);
+  @include wrapper-box-size(padding, $padding);
   @include wrapper-size(width, $width);
   @include wrapper-size(height, $height);
   @if ($overflow) {

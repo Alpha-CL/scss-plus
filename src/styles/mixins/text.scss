@@ -11,7 +11,6 @@ $text-all-property-name: (
         'text-indent',
 );
 
-
 $root-text-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 
 $text-default-family: $root-text-family;
@@ -129,6 +128,13 @@ $text-default-params: (
     $font-weight: $font-style;
     @include text($font-size, $color, $line-height, $font-weight, $font-style, $text-params);
   }
+}
+
+@mixin text-center($line-height) {
+  @if ($line-height) {
+    line-height: $line-height;
+  }
+  text-align: center;
 }
 
 @mixin text-single-line($width: 100px) {
