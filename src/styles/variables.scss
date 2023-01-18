@@ -1,0 +1,34 @@
+$color-base:          #333 !default;
+$color-main:          #333 !default;
+$color-sub:           #666 !default;
+
+$color-white:         #fff !default;
+$color-black:         #333 !default;
+$color-grey:          #999 !default;
+
+$color-blue:          #333 !default;
+$color-gray:          #333 !default;
+$color-green:         #333 !default;
+$color-cyan:          #333 !default;
+$color-yellow:        #333 !default;
+$color-red:           #333 !default;
+$color-orange:        #333 !default;
+
+$color-success:       $color-main !default;
+$color-warning:       $color-orange !default;
+$color-fail:          $color-red !default;
+
+// scss-docs-start theme-color-variable
+$color-primary:       $color-blue !default;
+$color-secondary:     $color-gray !default;
+$color-success:       $color-green !default;
+$color-info:          $color-cyan !default;
+$color-warning:       $color-yellow !default;
+$color-danger:        $color-red !default;
+$color-light:         $color-gray !default;
+$color-dark:          $color-gray !default;
+// scss-docs-start theme-color-variable
+
+
+$color-border:        #333 !default;
+$color-background:    #333 !default;
